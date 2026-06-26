@@ -469,7 +469,7 @@ class mssql(connection):
 
             for n, item in enumerate(raw_output):
                 username = item[""]
-                if username == "NULL":
+                if not username or username == "NULL":
                     continue
                 rid = so_far + n
                 self.logger.highlight(f"{rid}: {username}")
@@ -477,7 +477,7 @@ class mssql(connection):
                     {
                         "rid": rid,
                         "domain": domain,
-                        "username": username.split("\\")[1],
+                        "username": username.split("\\", 1)[1] if "\\" in username else username,
                     }
                 )
 
